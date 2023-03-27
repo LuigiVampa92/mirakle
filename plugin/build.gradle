@@ -35,6 +35,12 @@ task sourcesJar(type: Jar, dependsOn: classes) {
     from sourceSets.main.allSource
 }
 
+javadoc.failOnError = false
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
 def pomConfig = {
     licenses {
         license {
@@ -63,6 +69,7 @@ publishing {
             from components.java
 
             artifact sourcesJar
+            artifact javadocJar
 
             groupId 'io.github.adambl4'
             artifactId 'mirakle'

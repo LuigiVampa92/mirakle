@@ -49,6 +49,16 @@ def pomConfig = {
             distribution 'repo'
         }
     }
+    scm {
+        url 'hhttps://github.com/LuigiVampa92/mirakle'
+    }
+    developers {
+        developer {
+            id "luigivampa92"
+            name "Pavel Vasilev"
+            email "luigivampa92@gmail.com"
+        }
+    }
 }
 
 publishing {
@@ -71,15 +81,15 @@ publishing {
             artifact sourcesJar
             artifact javadocJar
 
-            groupId 'io.github.adambl4'
+            groupId 'com.luigivampa92'
             artifactId 'mirakle'
             version rootProject.version
 
             pom.withXml {
                 def root = asNode()
-                root.appendNode('description', 'Gradle plugin to move build process from local to a remote machine.')
+                root.appendNode('description', 'Gradle plugin to move build process from local to a remote machine. This project is a fork of Mirakle (https://github.com/adambl4/mirakle), all credits to the author of the original project. This fork contains a few extra features')
                 root.appendNode('name', 'Mirakle')
-                root.appendNode('url', 'https://github.com/adambl4/mirakle')
+                root.appendNode('url', 'https://github.com/LuigiVampa92/mirakle')
                 root.children().last() + pomConfig
             }
         }

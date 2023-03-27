@@ -43,6 +43,8 @@ open class Mirakle : Plugin<Gradle> {
         val gradlewRoot = findGradlewRoot(gradle.startParameter.currentDir)
             ?: throw MirakleException("gradlew executable file is not found.")
 
+        if (!isProjectDataPersisted(gradlewRoot)) return
+
         if (loadProperties(File(gradlewRoot, "local.properties"))["mirakle.enabled"] == "false") return
 
         gradle.assertNonSupportedFeatures()

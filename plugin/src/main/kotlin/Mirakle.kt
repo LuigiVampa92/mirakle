@@ -1,6 +1,5 @@
 import com.googlecode.streamflyer.core.ModifyingWriter
 import com.googlecode.streamflyer.regex.fast.FastRegexModifier
-import com.instamotor.mirakle.BuildConfig
 import org.apache.commons.io.output.WriterOutputStream
 import org.gradle.StartParameter
 import org.gradle.api.DefaultTask
@@ -132,8 +131,6 @@ open class Mirakle : Plugin<Gradle> {
                 }
 
                 if (config.host == null) throw MirakleException("Mirakle host is not defined.")
-
-                println("Here's Mirakle ${BuildConfig.VERSION}. All tasks will be executed on ${config.host}.")
 
                 val breakTaskFromCLI = startParamsCopy.projectProperties[BREAK_TASK]
                 val breakOnTasks = breakTaskFromCLI?.takeIf(String::isNotBlank)?.let(::listOf) ?: config.breakOnTasks

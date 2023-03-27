@@ -1,5 +1,2 @@
 include 'plugin'
 project(':plugin').name = "mirakle"
-include 'plugin-test'
-include 'benchmark'
-

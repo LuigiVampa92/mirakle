@@ -113,6 +113,51 @@ fun StartParameter.copy() = newInstance().also { copy ->
     copy.isNoBuildScan = this.isNoBuildScan
 }
 
+fun findUserHomeDirectory(): File? {
+    val osUserHome = System.getProperty("user.home")
+    val userHomeDir = File(osUserHome)
+    return if (userHomeDir.exists() && userHomeDir.isDirectory) {
+        userHomeDir
+    } else {
+        null
+    }
+}
+
+fun findMirakleProjectPropertiesFile(): File? {
+    findUserHomeDirectory()?.let {
+        val userGradleDirectory = File(it, ".gradle")
+        if (userGradleDirectory.exists() && userGradleDirectory.isDirectory) {
+            val mirakleDirectory = File(userGradleDirectory, "mirakle")
+            if (mirakleDirectory.exists() && mirakleDirectory.isDirectory) {
+                val projectPropertiesFile = File(mirakleDirectory, "project.properties")
+                if (projectPropertiesFile.exists() && projectPropertiesFile.isFile && projectPropertiesFile.canRead()) {
+                    return projectPropertiesFile
+                }
+            }
+        }
+    }
+    return null
+}
+
+fun isProjectDataPersisted(gradlewRoot: File?): Boolean {
+    if (gradlewRoot != null && gradlewRoot.exists()) {
+        val actualProjectDir = gradlewRoot.name
+        val actualProjectPath = gradlewRoot.absolutePath
+        val projectPropsFile = findMirakleProjectPropertiesFile()
+        if (projectPropsFile != null) {
+            val projectProperties = loadProperties(projectPropsFile)
+            if (projectProperties.containsKey("project.dir") && projectProperties.containsKey("project.path")) {
+                val persistedProjectDir = projectProperties["project.dir"]
+                val persistedProjectPath = projectProperties["project.path"]
+                if (actualProjectDir == persistedProjectDir && actualProjectPath == persistedProjectPath) {
+                    return true
+                }
+            }
+        }
+    }
+    return false
+}
+
 fun findGradlewRoot(root: File): File? {
     val gradlew = File(root, "gradlew")
     return if (gradlew.exists()) {

@@ -1,5 +1,5 @@
 group 'com.luigivampa92'
-version '1.6.1'
+version '1.6.1-01'
 
 buildscript {
     ext.kotlin_version = '1.5.31'

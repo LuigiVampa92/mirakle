@@ -149,8 +149,14 @@ fun isProjectDataPersisted(gradlewRoot: File?): Boolean {
             if (projectProperties.containsKey("project.dir") && projectProperties.containsKey("project.path")) {
                 val persistedProjectDir = projectProperties["project.dir"]
                 val persistedProjectPath = projectProperties["project.path"]
-                if (actualProjectDir == persistedProjectDir && actualProjectPath == persistedProjectPath) {
-                    return true
+                if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+                    if (actualProjectDir == persistedProjectDir) {
+                        return true
+                    }
+                } else {
+                    if (actualProjectDir == persistedProjectDir && actualProjectPath == persistedProjectPath) {
+                        return true
+                    }
                 }
             }
         }
